@@ -15,6 +15,7 @@ public class EmailAFriendForNotRegisteredUsersTest extends BaseTest {
     private SearchProductPage searchProductPage;
     private ProductDetailsPage productDetailsPage;
     EmailAFriendPage emailAFriendPage;
+
     @DataProvider(name = "EmailFriendForNonRegisteredData")
     public Object[][] provideData() throws IOException {
         List<String[]> data = ExcelReader.getEmailFriendForNonRegisteredData();
@@ -33,18 +34,17 @@ public class EmailAFriendForNotRegisteredUsersTest extends BaseTest {
     }
 
     @Test(dataProvider = "EmailFriendForNonRegisteredData")
-    public void searchForProductSuccessfully(String friendEmail,String userEmail, String personalMessage,String productName)
-    {
-        searchProductPage=new SearchProductPage(driver);
+    public void emailFriendForNonRegisteredUsers(String friendEmail, String userEmail, String personalMessage, String productName) {
+        searchProductPage = new SearchProductPage(getDriver());
         searchProductPage.productSearch(productName);
         searchProductPage.openProductDetailsPage();
-        productDetailsPage=new ProductDetailsPage(driver);
+        productDetailsPage = new ProductDetailsPage(getDriver());
         Assert.assertTrue(productDetailsPage.productNameBreadCrumb.getText().equalsIgnoreCase(productName));
         //Assert.assertEquals(productPage.productNameBreadCrumb.getText(),productName);--->we can use this also
-                productDetailsPage=new ProductDetailsPage(driver);
+        productDetailsPage = new ProductDetailsPage(getDriver());
         productDetailsPage.clickOnEmailAFriendButton();
-        emailAFriendPage=new EmailAFriendPage(driver);
-        emailAFriendPage.nonRegisteredUserCanNotSendAnEmailToHisFriend(friendEmail,userEmail,personalMessage);
+        emailAFriendPage = new EmailAFriendPage(getDriver());
+        emailAFriendPage.nonRegisteredUserCanNotSendAnEmailToHisFriend(friendEmail, userEmail, personalMessage);
         Assert.assertTrue(emailAFriendPage.errorMessage.getText().contains("Only registered customers can use email a friend feature"));
     }
 
@@ -69,4 +69,4 @@ public class EmailAFriendForNotRegisteredUsersTest extends BaseTest {
 //        Assert.assertTrue(emailAFriendPage.errorMessage.getText().contains("Only registered customers can use email a friend feature"));
 //    }
 //
- }
+}

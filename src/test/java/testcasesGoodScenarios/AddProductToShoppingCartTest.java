@@ -17,32 +17,31 @@ public class AddProductToShoppingCartTest extends BaseTest {
     private ProductDetailsPage productDetailsPage;
     private ShoppingCartPage shoppingCartPage;
 
-@DataProvider(name = "shoppingCartData")
-public Object[][] provideShoppingCartData() throws IOException {
-    List<String[]> data = ExcelReader.getAddProductToShoppingCartData();
-    Object[][] testData = new Object[data.size()][2];
+    @DataProvider(name = "shoppingCartData")
+    public Object[][] provideShoppingCartData() throws IOException {
+        List<String[]> data = ExcelReader.getAddProductToShoppingCartData();
+        Object[][] testData = new Object[data.size()][2];
 
-    for (int i = 0; i < data.size(); i++) {
-        String[] row = data.get(i);
-        testData[i][0] = row[0];
-        testData[i][1] = row[1];
+        for (int i = 0; i < data.size(); i++) {
+            String[] row = data.get(i);
+            testData[i][0] = row[0];
+            testData[i][1] = row[1];
+
+        }
+
+        return testData;
 
     }
 
-    return testData;
-
-}
-
     @Test(dataProvider = "shoppingCartData")
-    public void addProductToCart(String productName, String quantity)
-    {
-        searchProductPage=new SearchProductPage(driver);
+    public void addProductToCart(String productName, String quantity) {
+        searchProductPage = new SearchProductPage(getDriver());
         searchProductPage.productSearch(productName);
         searchProductPage.openProductDetailsPage();
-        productDetailsPage=new ProductDetailsPage(driver);
+        productDetailsPage = new ProductDetailsPage(getDriver());
         Assert.assertTrue(productDetailsPage.productNameBreadCrumb.getText().equalsIgnoreCase(productName));
         //Assert.assertEquals(productPage.productNameBreadCrumb.getText(),productName);--->we can use this also
-        shoppingCartPage=new ShoppingCartPage(driver);
+        shoppingCartPage = new ShoppingCartPage(getDriver());
         productDetailsPage.addProductToShoppingCart();
         productDetailsPage.goToShoppingCartPage();
         Assert.assertTrue(shoppingCartPage.productName.getText().equalsIgnoreCase(productName));
@@ -51,7 +50,8 @@ public Object[][] provideShoppingCartData() throws IOException {
         System.out.println(shoppingCartPage.itemQuantityField.getText());
         shoppingCartPage.removeProductFromCart();
         Assert.assertTrue(shoppingCartPage.shoppingCartIsEmptyMessage.getText().contains("Your Shopping Cart is empty!"));
-    }}
+    }
+}
 //Before Excel Reader
 //@Test(priority = 1)
 //public void searchForProductSuccessfully()

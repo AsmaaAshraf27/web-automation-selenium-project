@@ -31,8 +31,8 @@ public class SearchProductWithAutoSuggestTest extends BaseTest {
 
     @Test(dataProvider = "SearchWithAutoCompleteData")
     public void searchForProductWithAutoComplete(String searchText, String expectedProductName) {
-        searchProductPage = new SearchProductPage(driver);
-        productPage = new ProductDetailsPage(driver);
+        searchProductPage = new SearchProductPage(getDriver());
+        productPage = new ProductDetailsPage(getDriver());
         searchProductPage.searchUsingAutoSuggest(searchText);
         Assert.assertTrue(productPage.productNameBreadCrumb.getText()
                 .equalsIgnoreCase(expectedProductName));

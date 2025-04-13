@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite" parallel="classes" thread-count="5">
+    <parameter name="browser" value="headlessChrome"/>
+    <test verbose="2" preserve-order="true"
+          name="E:/headlessBrowserFeature/web-automation-selenium-project/src/test/java/testcasesGoodScenarios">
+        <classes>
+            <class name="testcasesGoodScenarios.AddProductToShoppingCartTest">
+                <methods>
+                    <include name="addProductToCart"/>
+                </methods>
+            </class>
+            <class name="testcasesGoodScenarios.AddProductToWishListTest">
+                <methods>
+                    <include name="addProductToTheWishList"/>
+                </methods>
+            </class>
+            <class name="testcasesGoodScenarios.AddReviewForRegisteredUsersTest">
+                <methods>
+                    <include name="userCanAddReviewSuccessfully"/>
+                </methods>
+            </class>
+            <class name="testcasesGoodScenarios.ChangePasswordTest">
+                <methods>
+                    <include name="userChangePasswordSuccessfully"/>
+                </methods>
+            </class>
+            <class name="testcasesGoodScenarios.CheckOUtTest">
+                <methods>
+                    <include name="userCanCheckOutSuccessfully"/>
+                </methods>
+            </class>
+            <class name="testcasesGoodScenarios.CompareProductsTest">
+                <methods>
+                    <include name="compareProducts"/>
+                </methods>
+            </class>
+            <class name="testcasesGoodScenarios.ContactUsTest">
+                <methods>
+                    <include name="userCanContactUsSuccessfully"/>
+                </methods>
+            </class>
+            <class name="testcasesGoodScenarios.EmailAFriendForNotRegisteredUsersTest">
+                <methods>
+                    <include name="searchForProductSuccessfully"/>
+                </methods>
+            </class>
+            <class name="testcasesGoodScenarios.EmailAFriendForRegisteredUsersTest">
+                <methods>
+                    <include name="userCanRegisterSuccessfully"/>
+                </methods>
+            </class>
+            <class name="testcasesGoodScenarios.GustCheckOutTest">
+                <methods>
+                    <include name="GuestCheckOut"/>
+                </methods>
+            </class>
+            <class name="testcasesGoodScenarios.LoginTest">
+                <methods>
+                    <include name="registeredUserCanLoginSuccessfully"/>
+                </methods>
+            </class>
+            <class name="testcasesGoodScenarios.ProductHoverMenuTest">
+                <methods>
+                    <include name="goToNotebooksPage"/>
+                </methods>
+            </class>
+            <class name="testcasesGoodScenarios.RegisterTest">
+                <methods>
+                    <include name="userCanRegisterSuccessfully"/>
+                </methods>
+            </class>
+            <class name="testcasesGoodScenarios.SearchProductTest">
+                <methods>
+                    <include name="searchForProductSuccessfully"/>
+                </methods>
+            </class>
+            <class name="testcasesGoodScenarios.SearchProductWithAutoSuggestTest">
+                <methods>
+                    <include name="searchForProductWithAutoComplete"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

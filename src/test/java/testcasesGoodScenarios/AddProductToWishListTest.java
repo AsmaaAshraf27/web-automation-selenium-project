@@ -35,20 +35,20 @@ public class AddProductToWishListTest extends BaseTest {
 
     @Test(priority = 1, dataProvider = "wishingListData")
     public void addProductToTheWishList(String productName) {
-        searchProductPage = new SearchProductPage(driver);
+        searchProductPage = new SearchProductPage(getDriver());
         searchProductPage.productSearch(productName);
         searchProductPage.openProductDetailsPage();
-        productDetailsPage = new ProductDetailsPage(driver);
+        productDetailsPage = new ProductDetailsPage(getDriver());
         Assert.assertTrue(productDetailsPage.productNameBreadCrumb.getText().equalsIgnoreCase(productName));
         //Assert.assertEquals(productPage.productNameBreadCrumb.getText(),productName);--->we can use this also
-        productDetailsPage = new ProductDetailsPage(driver);
+        productDetailsPage = new ProductDetailsPage(getDriver());
         productDetailsPage.addProductToWishlist();
         productDetailsPage.goToWishListPage();//---> كانت بتفيل ال test case معرفش ليه
 //     driver.navigate().to("https://demowebshop.tricentis.com/wishlist");
-        wishListPage = new WishListPage(driver);
+        wishListPage = new WishListPage(getDriver());
         Assert.assertTrue(wishListPage.wishListHeader.isDisplayed());
         Assert.assertTrue(wishListPage.productCell.getText().contains(productName));
-        wishListPage = new WishListPage(driver);
+        wishListPage = new WishListPage(getDriver());
         wishListPage.removeProductFromwishList();
         Assert.assertTrue(wishListPage.EmptyCartLabel.getText().contains("The wishlist is empty!"));
     }

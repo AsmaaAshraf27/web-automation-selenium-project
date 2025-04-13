@@ -39,21 +39,23 @@ public class RegisterTest extends BaseTest {
         tempEmail = email;
         tempPassword = password;
 
-        homePage = new HomePage(driver);
+        homePage = new HomePage(getDriver());
         homePage.openRegisterPage();
-        registerPage = new RegisterPage(driver);
+        registerPage = new RegisterPage(getDriver());
 
         registerPage.userRegistration(fName, lName, email, password);
         Assert.assertTrue(registerPage.successRegisterResult.getText()
                 .contains("Your registration completed"));
+        registerPage.GoBackToTheHomePage();
         registerPage.userLogout();
         homePage.openLoginPage();
-        loginPage = new LoginPage(driver);
+        loginPage = new LoginPage(getDriver());
         loginPage.userLogin(tempEmail, tempPassword);
         Assert.assertTrue(registerPage.logOutLink.getText().contains("Log out"));
         Thread.sleep(2000);
         registerPage.userLogout();
-    }}
+    }
+}
 //Before Excel Reader
 //    @Test( priority = 1, alwaysRun = true)
 //    public void userCanRegisterSuccessfully(String fName, String lName, String email, String password) {

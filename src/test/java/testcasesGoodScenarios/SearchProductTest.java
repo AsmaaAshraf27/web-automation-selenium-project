@@ -28,8 +28,8 @@ public class SearchProductTest extends BaseTest {
 
     @Test(dataProvider = "searchData")
     public void searchForProductSuccessfully(String productName) {
-        searchProductPage = new SearchProductPage(driver);
-        productDetailsPage = new ProductDetailsPage(driver);
+        searchProductPage = new SearchProductPage(getDriver());
+        productDetailsPage = new ProductDetailsPage(getDriver());
 
         searchProductPage.productSearch(productName);
         searchProductPage.openProductDetailsPage();

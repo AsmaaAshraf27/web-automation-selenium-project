@@ -6,6 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriverService;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 import utilities.Helper;
@@ -15,7 +18,17 @@ import java.time.Duration;
 import java.util.HashMap;
 
 public class BaseTest extends AbstractTestNGCucumberTests {
-    public static WebDriver driver;
+    //public static WebDriver driver;--->Before Parallel execution
+    private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+    //كده كل Thread (يعني كل Test Case بتشتغل في نفس الوقت) بيكون ليه نسخة مستقلة من الـ WebDriver
+    //وبنستخدمها من خلال:
+    // public static WebDriver getDriver() {
+    //    return driver.get();}
+
+    public static WebDriver getDriver() {
+        return driver.get();
+    }
+
     public static String downloadPath = System.getProperty("user.dir") + File.separator + "downloads";
     File file = new File(downloadPath);
 
@@ -41,25 +54,38 @@ public class BaseTest extends AbstractTestNGCucumberTests {
         return options;
     }
 
-    @BeforeSuite
+    @BeforeMethod
     @Parameters({"browser"})
     public void setUpDriver(@Optional("chrome") String browserName) {
+        WebDriver localDriver;
         if (browserName.equalsIgnoreCase("chrome")) {
             WebDriverManager.chromedriver().setup();
-            driver = new ChromeDriver(chromeOption());
+            localDriver = new ChromeDriver(chromeOption());
         } else if (browserName.equalsIgnoreCase("firefox")) {
             WebDriverManager.firefoxdriver().setup();
-            driver = new FirefoxDriver();
+            localDriver = new FirefoxDriver();
+        } else if (browserName.equalsIgnoreCase("headlessChrome")) {
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--headless=new"); // Use --headless=new for latest chrome
+            options.addArguments("--disable-gpu");
+            options.addArguments("--ignore-certificate-errors");
+            options.addArguments("--allow-insecure-localhost");
+            WebDriverManager.chromedriver().setup();
+            localDriver = new ChromeDriver(options);
+        } else {
+            throw new IllegalArgumentException("Unsupported browser: " + browserName);
         }
 
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.get("https://demowebshop.tricentis.com/");
+        driver.set(localDriver);
+        getDriver().manage().window().maximize();
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        getDriver().get("https://demowebshop.tricentis.com/");
     }
 
-    @AfterSuite
+    @AfterMethod
     public void tearDown() {
-        driver.quit();
+        getDriver().quit();
+        driver.remove();
     }
 
     // Take screenshot when the test case fails and add it to the screenshot folder
@@ -68,7 +94,7 @@ public class BaseTest extends AbstractTestNGCucumberTests {
         if (result.getStatus() == ITestResult.FAILURE) {
             System.out.println("Failed!");
             System.out.println("Taking screenshot.....");
-            Helper.captureScreenShot(driver, result.getName());
+            Helper.captureScreenShot(getDriver(), result.getName());
         }
     }
 
