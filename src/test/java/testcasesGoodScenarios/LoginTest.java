@@ -32,11 +32,11 @@ public class LoginTest extends BaseTest {
 
     @Test(dataProvider = "loginData")
     public void registeredUserCanLoginSuccessfully(String email, String password) throws InterruptedException {
-        homePage = new HomePage(driver);
+        homePage = new HomePage(getDriver());
         homePage.openLoginPage();
-        loginPage = new LoginPage(driver);
+        loginPage = new LoginPage(getDriver());
         loginPage.userLogin(email, password);
-        registerPage = new RegisterPage(driver);
+        registerPage = new RegisterPage(getDriver());
         Assert.assertTrue(registerPage.logOutLink.getText().contains("Log out"));
         Thread.sleep(2000);
         registerPage.userLogout();

@@ -15,6 +15,7 @@ public class CompareProductsTest extends BaseTest {
     private SearchProductPage searchProductPage;
     private ProductDetailsPage productDetailsPage;
     private CompareProductsPage compareProductsPage;
+
     @DataProvider(name = "compareProductsData")
     public Object[][] provideCompareProductsData() throws IOException {
         List<String[]> data = ExcelReader.getCompareProductData();
@@ -30,27 +31,27 @@ public class CompareProductsTest extends BaseTest {
         return testData;
     }
 
-@Test(priority = 1,dataProvider = "compareProductsData")
-public void compareProducts(String product1Name, String product2Name)
-{
-    searchProductPage=new SearchProductPage(driver);
-    compareProductsPage=new CompareProductsPage(driver);
-    searchProductPage.productSearch(product1Name);
-    searchProductPage.openProductDetailsPage();
-    productDetailsPage=new ProductDetailsPage(driver);
-    Assert.assertTrue(productDetailsPage.productNameBreadCrumb.getText().equalsIgnoreCase(product1Name));
-    productDetailsPage.addProductToCompareList();
-    Assert.assertTrue(compareProductsPage.product1Name.getText().contains(product1Name));
-    searchProductPage.productSearch(product2Name);
-    searchProductPage.openProductDetailsPage();
-    Assert.assertTrue(productDetailsPage.productNameBreadCrumb.getText().equalsIgnoreCase(product2Name));
-    productDetailsPage.addProductToCompareList();
-    Assert.assertTrue(compareProductsPage.product2Name.getText().contains(product2Name));
-    compareProductsPage.compareProducts();
-    compareProductsPage.removeAllComparedItems();
-    Assert.assertTrue(compareProductsPage.noItemsToCompareMessage.getText().contains("You have no items to compare."));
+    @Test(priority = 1, dataProvider = "compareProductsData")
+    public void compareProducts(String product1Name, String product2Name) {
+        searchProductPage = new SearchProductPage(getDriver());
+        compareProductsPage = new CompareProductsPage(getDriver());
+        searchProductPage.productSearch(product1Name);
+        searchProductPage.openProductDetailsPage();
+        productDetailsPage = new ProductDetailsPage(getDriver());
 
-}
+        Assert.assertTrue(productDetailsPage.productNameBreadCrumb.getText().equalsIgnoreCase(product1Name));
+        productDetailsPage.addProductToCompareList();
+        Assert.assertTrue(compareProductsPage.product1Name.getText().contains(product1Name));
+        searchProductPage.productSearch(product2Name);
+        searchProductPage.openProductDetailsPage();
+        Assert.assertTrue(productDetailsPage.productNameBreadCrumb.getText().equalsIgnoreCase(product2Name));
+        productDetailsPage.addProductToCompareList();
+        Assert.assertTrue(compareProductsPage.product2Name.getText().contains(product2Name));
+        compareProductsPage.compareProducts();
+        compareProductsPage.removeAllComparedItems();
+        Assert.assertTrue(compareProductsPage.noItemsToCompareMessage.getText().contains("You have no items to compare."));
+
+    }}
 //@Test(priority = 2)
 //    public void clearCompareProductsList()
 //{
@@ -58,7 +59,7 @@ public void compareProducts(String product1Name, String product2Name)
 //    Assert.assertTrue(compareProductsPage.noItemsToCompareMessage.getText().contains("You have no items to compare."));
 //
 //}
-}
+
 
 
 //    @Test(priority = 1)

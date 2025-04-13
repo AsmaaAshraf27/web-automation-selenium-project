@@ -17,7 +17,8 @@ public class ChangePasswordTest extends BaseTest {
     private HomePage homePage;
     private RegisterPage registerPage;
     private CustomerPage customerPage;
-//    private String firstname;
+
+    //    private String firstname;
 //    private String lastname;
 //    private String email;
 //    private String oldPassword;
@@ -33,39 +34,39 @@ public class ChangePasswordTest extends BaseTest {
 //        oldPassword = row[3];// كلمة المرور القديمة
 //        newPassword = row[4];// كلمة المرور الجديدة
 //    }
-@DataProvider(name = "ChangePasswordData")
-public Object[][] provideChangePasswordData() throws IOException {
-    List<String[]> data = ExcelReader.getReviewData();
-    Object[][] testData = new Object[data.size()][5];
+    @DataProvider(name = "ChangePasswordData")
+    public Object[][] provideChangePasswordData() throws IOException {
+        List<String[]> data = ExcelReader.getReviewData();
+        Object[][] testData = new Object[data.size()][5];
 
-    for (int i = 0; i < data.size(); i++) {
-        String[] row = data.get(i);
-        testData[i][0] = row[0];
-        testData[i][1] = row[1];
-        testData[i][2] = row[2];
-        testData[i][3] = row[3];
-        testData[i][4] = row[4];
+        for (int i = 0; i < data.size(); i++) {
+            String[] row = data.get(i);
+            testData[i][0] = row[0];
+            testData[i][1] = row[1];
+            testData[i][2] = row[2];
+            testData[i][3] = row[3];
+            testData[i][4] = row[4];
 
+
+        }
+
+        return testData;
 
     }
 
-    return testData;
-
-}
-
     @Test(dataProvider = "ChangePasswordData")
-    public void userChangePasswordSuccessfully(String firstname,String lastname,String email,String oldPassword,String newPassword)
-    {
-        homePage=new HomePage(driver);
+    public void userChangePasswordSuccessfully(String firstname, String lastname, String email, String oldPassword, String newPassword) {
+        homePage = new HomePage(getDriver());
         homePage.openRegisterPage();
-        registerPage=new RegisterPage(driver);
+        registerPage = new RegisterPage(getDriver());
 
-        registerPage.userRegistration(firstname,lastname,email,oldPassword);
+        registerPage.userRegistration(firstname, lastname, email, oldPassword);
         Assert.assertTrue(registerPage.successRegisterResult.getText().contains("Your registration completed"));
-        customerPage=new CustomerPage(driver);
+        registerPage.GoBackToTheHomePage();
+        customerPage = new CustomerPage(getDriver());
         homePage.openMyAccountPage();
         customerPage.openChangePasswordPage();
-        customerPage.changePassword(oldPassword,newPassword);
+        customerPage.changePassword(oldPassword, newPassword);
         Assert.assertTrue(customerPage.changePasswordResultMessage.getText().contains("Password was changed"));
         registerPage.userLogout();
     }

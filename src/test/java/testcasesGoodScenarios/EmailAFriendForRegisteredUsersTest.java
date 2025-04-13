@@ -1,7 +1,6 @@
 package testcasesGoodScenarios;
 
 
-
 import com.github.javafaker.Faker;
 import data.ExcelReader;
 import org.testng.Assert;
@@ -19,6 +18,7 @@ public class EmailAFriendForRegisteredUsersTest extends BaseTest {
     SearchProductPage searchProductPage;
     ProductDetailsPage productDetailsPage;
     EmailAFriendPage emailAFriendPage;
+
     @DataProvider(name = "EmailFriendForRegisteredData")
     public Object[][] provideEmailFriendData() throws IOException {
         List<String[]> data = ExcelReader.getEmailFriendForRegisteredData();
@@ -38,25 +38,27 @@ public class EmailAFriendForRegisteredUsersTest extends BaseTest {
         return testData;
 
     }
-    @Test(dataProvider = "EmailFriendForRegisteredData")
-    public void userCanRegisterSuccessfully(String firstName,String lastName,String email,
-                                            String password,String friendEmail, String personalMessage,String productName) throws InterruptedException {
-        homePage=new HomePage(driver);
-        homePage.openRegisterPage();
-        registerPage=new RegisterPage(driver);
 
-        registerPage.userRegistration(firstName,lastName,email,password);
+    @Test(dataProvider = "EmailFriendForRegisteredData")
+    public void userCanRegisterSuccessfully(String firstName, String lastName, String email,
+                                            String password, String friendEmail, String personalMessage, String productName) throws InterruptedException {
+        homePage = new HomePage(getDriver());
+        homePage.openRegisterPage();
+        registerPage = new RegisterPage(getDriver());
+
+        registerPage.userRegistration(firstName, lastName, email, password);
         Assert.assertTrue(registerPage.successRegisterResult.getText().contains("Your registration completed"));
-        searchProductPage=new SearchProductPage(driver);
+        registerPage.GoBackToTheHomePage();
+        searchProductPage = new SearchProductPage(getDriver());
         searchProductPage.productSearch(productName);
         searchProductPage.openProductDetailsPage();
-        productDetailsPage=new ProductDetailsPage(driver);
+        productDetailsPage = new ProductDetailsPage(getDriver());
         Assert.assertTrue(productDetailsPage.productNameBreadCrumb.getText().equalsIgnoreCase(productName));
 //        //Assert.assertEquals(productPage.productNameBreadCrumb.getText(),productName);--->we can use this also
-        productDetailsPage=new ProductDetailsPage(driver);
+        productDetailsPage = new ProductDetailsPage(getDriver());
         productDetailsPage.clickOnEmailAFriendButton();
-        emailAFriendPage=new EmailAFriendPage(driver);
-        emailAFriendPage.registeredUserCanSendAnEmailToHisFriend(friendEmail,personalMessage);
+        emailAFriendPage = new EmailAFriendPage(getDriver());
+        emailAFriendPage.registeredUserCanSendAnEmailToHisFriend(friendEmail, personalMessage);
         Assert.assertTrue(emailAFriendPage.successMessage.getText().contains("Your message has been sent."));
         registerPage.userLogout();
         Thread.sleep(2000);

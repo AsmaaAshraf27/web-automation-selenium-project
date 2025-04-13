@@ -58,35 +58,36 @@ public class CheckOUtTest extends BaseTest {
 
 
     @Test(dataProvider = "checkOutData")
-    public void userCanCheckOutSuccessfully(String firstName, String lastName, String email,String country
-            ,String city,String address,String postalCode,String phoneNumber,String productName,String password) throws InterruptedException {
-        homePage = new HomePage(driver);
+    public void userCanCheckOutSuccessfully(String firstName, String lastName, String email, String country
+            , String city, String address, String postalCode, String phoneNumber, String productName, String password) throws InterruptedException {
+        homePage = new HomePage(getDriver());
         homePage.openRegisterPage();
-        registerPage = new RegisterPage(driver);
+        registerPage = new RegisterPage(getDriver());
         registerPage.userRegistration(firstName, lastName, email, password);
         Assert.assertTrue(registerPage.successRegisterResult.getText()
                 .contains("Your registration completed"));
-        searchProductPage = new SearchProductPage(driver);
+        registerPage.GoBackToTheHomePage();
+        searchProductPage = new SearchProductPage(getDriver());
         searchProductPage.productSearch(productName);
         searchProductPage.openProductDetailsPage();
-        productDetailsPage = new ProductDetailsPage(driver);
+        productDetailsPage = new ProductDetailsPage(getDriver());
         Assert.assertTrue(productDetailsPage.productNameBreadCrumb.getText()
                 .equalsIgnoreCase(productName));
-        shoppingCartPage = new ShoppingCartPage(driver);
+        shoppingCartPage = new ShoppingCartPage(getDriver());
         productDetailsPage.addProductToShoppingCart();
         productDetailsPage.goToShoppingCartPage();
         Assert.assertTrue(shoppingCartPage.productName.getText()
                 .equalsIgnoreCase(productName));
         shoppingCartPage.openCheckOutPageForRegisteredUsers();
-        checkOutPage = new CheckOutPage(driver);
+        checkOutPage = new CheckOutPage(getDriver());
         checkOutPage.registeredUsersCanCheckOut(city, address, postalCode, phoneNumber, country);
         checkOutPage.orderConfirmation();
         Assert.assertTrue(checkOutPage.successMessage.getText()
                 .contains("Your order has been successfully processed!"));
         checkOutPage.orderDetails();
-        orderDetailsPage = new OrderDetailsPage(driver);
+        orderDetailsPage = new OrderDetailsPage(getDriver());
         orderDetailsPage.orderDownloading();
-        Thread.sleep(5000);
+        Thread.sleep(2000);
         orderDetailsPage.orderPrinting();
         registerPage.userLogout();
     }

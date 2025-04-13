@@ -16,6 +16,7 @@ public class AddReviewForRegisteredUsersTest extends BaseTest {
     private SearchProductPage searchProductPage;
     private ProductDetailsPage productDetailsPage;
     AddReviewForRegisteredUsersPage addReviewForRegisteredUsersPage;
+
     @DataProvider(name = "addReviewData")
     public Object[][] provideAddReviewData() throws IOException {
         List<String[]> data = ExcelReader.getReviewData();
@@ -36,25 +37,26 @@ public class AddReviewForRegisteredUsersTest extends BaseTest {
         return testData;
 
     }
-    @Test(priority = 1,dataProvider = "addReviewData")
-    public void userCanAddReviewSuccessfully(String firstname, String lastname,String email,  String password,
-                                            String productName, String reviewTitle,String reviewDescription )
-    {
-        homePage=new HomePage(driver);
-        homePage.openRegisterPage();
-        registerPage=new RegisterPage(driver);
 
-        registerPage.userRegistration(firstname,lastname,email,password);
+    @Test(priority = 1, dataProvider = "addReviewData")
+    public void userCanAddReviewSuccessfully(String firstname, String lastname, String email, String password,
+                                             String productName, String reviewTitle, String reviewDescription) {
+        homePage = new HomePage(getDriver());
+        homePage.openRegisterPage();
+        registerPage = new RegisterPage(getDriver());
+
+        registerPage.userRegistration(firstname, lastname, email, password);
         Assert.assertTrue(registerPage.successRegisterResult.getText().contains("Your registration completed"));
-        searchProductPage=new SearchProductPage(driver);
+        registerPage.GoBackToTheHomePage();
+        searchProductPage = new SearchProductPage(getDriver());
         searchProductPage.productSearch(productName);
         searchProductPage.openProductDetailsPage();
-        productDetailsPage=new ProductDetailsPage(driver);
+        productDetailsPage = new ProductDetailsPage(getDriver());
         Assert.assertTrue(productDetailsPage.productNameBreadCrumb.getText().equalsIgnoreCase(productName));
         //Assert.assertEquals(productPage.productNameBreadCrumb.getText(),productName);--->we can use this also
         productDetailsPage.goToReviewPage();
-        addReviewForRegisteredUsersPage=new AddReviewForRegisteredUsersPage(driver);
-        addReviewForRegisteredUsersPage.registeredUserCanAddReview(reviewTitle,reviewDescription);
+        addReviewForRegisteredUsersPage = new AddReviewForRegisteredUsersPage(getDriver());
+        addReviewForRegisteredUsersPage.registeredUserCanAddReview(reviewTitle, reviewDescription);
         Assert.assertTrue(addReviewForRegisteredUsersPage.reviewSuccessMessage.getText()
                 .contains("Product review is successfully added."));
         registerPage.userLogout();

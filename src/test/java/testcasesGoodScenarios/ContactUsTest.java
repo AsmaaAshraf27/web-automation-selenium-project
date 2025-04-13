@@ -32,10 +32,10 @@ public class ContactUsTest extends BaseTest {
 
     @Test(dataProvider = "contactUsData")
     public void userCanContactUsSuccessfully(String name, String email, String message) {
-        homePage = new HomePage(driver);
+        homePage = new HomePage(getDriver());
         homePage.openContactUsPage();
 
-        contactUsPage = new ContactUsPage(driver);
+        contactUsPage = new ContactUsPage(getDriver());
         contactUsPage.contactUs(name, email, message);
         Assert.assertTrue(contactUsPage.successMessage.getText()
                 .contains("Your enquiry has been successfully sent to the store owner."));
