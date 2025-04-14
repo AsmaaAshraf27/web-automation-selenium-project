@@ -2,6 +2,9 @@ package testcasesGoodScenarios;
 
 import data.ExcelReader;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -10,6 +13,7 @@ import pages.SearchProductPage;
 import pages.ShoppingCartPage;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 
 public class AddProductToShoppingCartTest extends BaseTest {
@@ -38,12 +42,15 @@ public class AddProductToShoppingCartTest extends BaseTest {
         searchProductPage = new SearchProductPage(getDriver());
         searchProductPage.productSearch(productName);
         searchProductPage.openProductDetailsPage();
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         productDetailsPage = new ProductDetailsPage(getDriver());
         Assert.assertTrue(productDetailsPage.productNameBreadCrumb.getText().equalsIgnoreCase(productName));
         //Assert.assertEquals(productPage.productNameBreadCrumb.getText(),productName);--->we can use this also
         shoppingCartPage = new ShoppingCartPage(getDriver());
         productDetailsPage.addProductToShoppingCart();
         productDetailsPage.goToShoppingCartPage();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("product-name")));
+
         Assert.assertTrue(shoppingCartPage.productName.getText().equalsIgnoreCase(productName));
         shoppingCartPage.updateProductQuantityFromShoppingCartPage(quantity);
         //Assert.assertTrue(shoppingCartPage.itemQuantityField.getText().equalsIgnoreCase("3"));

@@ -1,6 +1,9 @@
 package testcasesGoodScenarios;
 
 import data.ExcelReader;
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -8,6 +11,7 @@ import org.testng.annotations.Test;
 import pages.*;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 
 public class CheckOUtTest extends BaseTest {
@@ -70,12 +74,14 @@ public class CheckOUtTest extends BaseTest {
         searchProductPage = new SearchProductPage(getDriver());
         searchProductPage.productSearch(productName);
         searchProductPage.openProductDetailsPage();
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         productDetailsPage = new ProductDetailsPage(getDriver());
         Assert.assertTrue(productDetailsPage.productNameBreadCrumb.getText()
                 .equalsIgnoreCase(productName));
         shoppingCartPage = new ShoppingCartPage(getDriver());
         productDetailsPage.addProductToShoppingCart();
         productDetailsPage.goToShoppingCartPage();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("product-name")));
         Assert.assertTrue(shoppingCartPage.productName.getText()
                 .equalsIgnoreCase(productName));
         shoppingCartPage.openCheckOutPageForRegisteredUsers();
