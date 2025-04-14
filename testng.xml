@@ -42,7 +42,7 @@
             </class>
             <class name="testcasesGoodScenarios.EmailAFriendForNotRegisteredUsersTest">
                 <methods>
-                    <include name="searchForProductSuccessfully"/>
+                    <include name="emailFriendForNonRegisteredUsers"/>
                 </methods>
             </class>
             <class name="testcasesGoodScenarios.EmailAFriendForRegisteredUsersTest">
@@ -52,7 +52,7 @@
             </class>
             <class name="testcasesGoodScenarios.GustCheckOutTest">
                 <methods>
-                    <include name="GuestCheckOut"/>
+                    <include name="guestCheckOut"/>
                 </methods>
             </class>
             <class name="testcasesGoodScenarios.LoginTest">
