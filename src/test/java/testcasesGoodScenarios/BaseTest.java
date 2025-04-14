@@ -1,14 +1,9 @@
 package testcasesGoodScenarios;
-
-import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 import utilities.Helper;
@@ -17,7 +12,7 @@ import java.io.File;
 import java.time.Duration;
 import java.util.HashMap;
 
-public class BaseTest extends AbstractTestNGCucumberTests {
+public class BaseTest  {
     //public static WebDriver driver;--->Before Parallel execution
     private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
     //كده كل Thread (يعني كل Test Case بتشتغل في نفس الوقت) بيكون ليه نسخة مستقلة من الـ WebDriver
